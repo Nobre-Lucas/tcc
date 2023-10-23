@@ -45,6 +45,11 @@ def load_house_server_side():
     (X_train, y_train), (_, _)  = load_house()[:3]
     return X_train, y_train
 
+
+def load_server_side_validation_data():
+    (_, _), (X_valid, y_valid)  = load_house()[-3:]
+    return X_valid, y_valid
+
 def shuffle(X: np.ndarray, y: np.ndarray):
     """Shuffle X and y."""
     rng = np.random.default_rng()
