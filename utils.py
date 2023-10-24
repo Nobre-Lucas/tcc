@@ -3,6 +3,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 
+np.random.seed(42)
+
 def set_initial_params(model: RandomForestRegressor, X_train, y_train):
     model.fit(X_train, y_train)
 
@@ -42,13 +44,13 @@ def load_house():
     return (X_train, y_train), (X_test, y_test)
 
 def load_house_server_side():
-    (X_train, y_train), (_, _)  = load_house()[:3]
-    return X_train, y_train
+    (X_train, y_train), (_, _)  = load_house()
+    return X_train[:2], y_train[:2]
 
 
 def load_server_side_validation_data():
-    (_, _), (X_valid, y_valid)  = load_house()[-3:]
-    return X_valid, y_valid
+    (_, _), (X_valid, y_valid)  = load_house()
+    return X_valid[-2:], y_valid[-2:]
 
 def shuffle(X: np.ndarray, y: np.ndarray):
     """Shuffle X and y."""
