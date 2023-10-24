@@ -14,7 +14,7 @@ print(f'{server.model.estimators_}\n{client1.local_model.estimators_}\n{client2.
 
 for i in range(5):
     # Fase 3: Receber os parâmetros do servidor e avaliar
-    print(f'Round: {i}')
+    print(f'Round: {i+1}')
     (error1, best_trees1) = client1.evaluate(server.model)
     (error2, best_trees2) = client2.evaluate(server.model)
     (error3, best_trees3) = client3.evaluate(server.model)
