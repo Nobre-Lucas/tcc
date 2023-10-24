@@ -4,8 +4,8 @@ from sklearn.metrics import mean_absolute_error
 import utils
 
 class FedForest():
-    def __init__(self) -> None:
-        pass
+    def __init__(self, model: RandomForestRegressor) -> None:
+        self.model = model
 
     def aggregate_fit_best_forest_strategy(self, best_forests: list[RandomForestRegressor]):
         """
