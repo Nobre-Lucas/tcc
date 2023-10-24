@@ -5,7 +5,7 @@ import uuid
 
 import utils
 
-TREES_BY_CLIENT = 470
+TREES_BY_CLIENT = 1
 
 class HouseClient():
 
@@ -35,20 +35,16 @@ class HouseClient():
         local_error = mean_absolute_error(self.y_test, self.local_model.predict(self.X_test))
         global_model_error = mean_absolute_error(self.y_test, global_model.predict(self.X_test))
 
-        print(f'Local Error: {local_error}')
-
         if local_error < global_model_error:
-             print('Erro local é menor')
+             print(f'Client_id {self.id}: Erro local é menor')
              error = local_error
         else:
-             print('Erro global é menor')
+             print(f'Client_id {self.id}: Erro global é menor')
              error = global_model_error
              self.trees = global_model_trees
              utils.set_model_params(self.local_model, self.trees)
-            
-        accuracy = self.local_model.score(self.X_test, self.y_test)
 
-        return error, accuracy, self.trees
+        return error, self.trees
 
     
         
