@@ -1,5 +1,15 @@
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_absolute_error
+
+import warnings
+# from sklearn.exceptions import DataConversionWarning
+
+# Suprimir todos os warnings do scikit-learn
+# warnings.filterwarnings("ignore", category=DataConversionWarning)
+
+# Se desejar suprimir todos os warnings (não recomendado para depuração)
+warnings.filterwarnings("ignore")
 
 import utils
 
@@ -7,7 +17,7 @@ class FedForest():
     def __init__(self, model: RandomForestRegressor) -> None:
         self.model = model
 
-    def aggregate_fit_best_forest_strategy(self, best_forests: list[RandomForestRegressor]):
+    def aggregate_fit_best_forest_strategy(self, best_forests: list[list[DecisionTreeRegressor]]):
         """
         Essa estratégia percorre as árvores retornadas por cada um dos clientes salvando
         o menor erro entre todas. Ele define a floresta com menor erro como sendo a melhor
@@ -22,6 +32,23 @@ class FedForest():
                 best_forest = forest
                 best_forest_error = forest_error
 
+        # print(best_forest)
+
         utils.set_model_params(self.model, best_forest)
         
         return best_forest
+    
+    def aggregate_fit_best_trees_strategy(self, best_forests: list[list[DecisionTreeRegressor]]):
+        X_valid, y_valid = utils.load_server_side_validation_data()
+        best_trees = []
+        best_trees_ratio = int(len(best_forests[0]) * 0.5) # numero de melhores arvores por floresta
+        print(f'Numero de melhores arvores por floresta é: {best_trees_ratio}')
+        for forest in best_forests:
+            forest_trees = forest
+            trees_sorted = sorted(forest_trees, key=lambda tree: mean_absolute_error(y_valid, tree.predict(X_valid)))
+            best_trees.extend(trees_sorted[:best_trees_ratio])
+            
+        # print(best_trees)
+
+        return best_trees
+        

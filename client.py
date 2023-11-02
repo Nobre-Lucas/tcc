@@ -5,7 +5,7 @@ import uuid
 
 import utils
 
-TREES_BY_CLIENT = 1
+TREES_BY_CLIENT = 50
 
 class HouseClient():
 
@@ -19,10 +19,7 @@ class HouseClient():
         (self.X_train, self.y_train) = utils.partition(X_train, y_train, 4)[partition_id]
 
         # Initialize local model and set initial_parameters
-        self.local_model = RandomForestRegressor(random_state=42, 
-                                           n_estimators=TREES_BY_CLIENT, 
-                                           max_depth=27, 
-                                           max_leaf_nodes=6121)
+        self.local_model = RandomForestRegressor(n_estimators=TREES_BY_CLIENT)
         utils.set_initial_params(self.local_model, X_train, y_train) 
         self.trees = self.local_model.estimators_
 
@@ -36,13 +33,13 @@ class HouseClient():
         global_model_error = mean_absolute_error(self.y_test, global_model.predict(self.X_test))
 
         if local_error < global_model_error:
-             print(f'Client_id {self.id}: Erro local é menor')
              error = local_error
+            #  print(f'Client_id {self.id}: Erro local de {error} é menor')
         else:
-             print(f'Client_id {self.id}: Erro global é menor')
              error = global_model_error
              self.trees = global_model_trees
              utils.set_model_params(self.local_model, self.trees)
+            #  print(f'Client_id {self.id}: Erro global de {error} é menor')
 
         return error, self.trees
 
