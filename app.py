@@ -10,9 +10,9 @@ client1 = HouseClient()
 client2 = HouseClient()
 client3 = HouseClient()
 client4 = HouseClient()
-print(f'{server.model.estimators_}\n{client1.local_model.estimators_}\n{client2.local_model.estimators_}')
+# print(f'{server.model.estimators_}\n{client1.local_model.estimators_}\n{client2.local_model.estimators_}')
 
-for i in range(5):
+for i in range(3):
     # Fase 3: Receber os parâmetros do servidor e avaliar
     print(f'Round: {i+1}')
     (error1, best_trees1) = client1.evaluate(server.model)
@@ -26,4 +26,8 @@ for i in range(5):
     print(f'Client_id {client4.id} - erro absoluto médio: {error4}')
 
     # Fase 4: Agregar treinamento
+    # server.aggregate_fit([client1.local_model, 
+    #                       client2.local_model, 
+    #                       client3.local_model, 
+    #                       client4.local_model])
     server.aggregate_fit([client1.trees, client2.trees, client3.trees, client4.trees])
