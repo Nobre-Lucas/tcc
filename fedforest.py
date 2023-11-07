@@ -40,6 +40,12 @@ class FedForest():
         return best_forest
     
     def aggregate_fit_best_trees_strategy(self, best_forests: list[list[DecisionTreeRegressor]]):
+        """
+        Essa estratégia ordena as árvores de cada floresta com base no seu erro quadrático médio.
+        Quanto menor, melhor a árvore.
+        Depois, coleta as x% melhores árvores de cada floresta e agrega elas em uma nova floresta
+        que se torna o novo modelo global.
+        """
         X_valid, y_valid = utils.load_server_side_validation_data()
         best_trees = []
         best_trees_ratio = int(len(best_forests[0]) * 0.5) # numero de melhores arvores por floresta
@@ -54,6 +60,10 @@ class FedForest():
         return best_trees
     
     def aggregate_fit_random_trees_strategy(self, best_forests: list[list[DecisionTreeRegressor]]):
+        """
+        Essa estratégia escolhe um subset aleatório de árvores de cada floresta e agrega essas
+        árvores em uma nova floresta que se torna o novo modelo global
+        """
         best_trees = []
         best_trees_ratio = int(len(best_forests[0]) * 0.5) # numero de melhores arvores por floresta
 
