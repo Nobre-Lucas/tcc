@@ -16,13 +16,6 @@ class GlobalServer():
         self.strategy = FedForest(self.model)
 
     def aggregate_fit(self, best_forests: list[RandomForestRegressor]):
-        self.model.estimators_ = self.strategy.aggregate_fit_best_trees_strategy(best_forests)
+        self.model.estimators_ = self.strategy.aggregate_fit_random_trees_strategy(best_forests)
         self.global_trees = self.model.estimators_
-        # return self.strategy.aggregate_fit_best_forest_strategy(best_forests)
-
-        
-        
-
-    
-
-        
+                

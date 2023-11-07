@@ -2,6 +2,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_absolute_error
 
+import random
 import warnings
 # from sklearn.exceptions import DataConversionWarning
 
@@ -49,6 +50,24 @@ class FedForest():
             best_trees.extend(trees_sorted[:best_trees_ratio])
             
         # print(best_trees)
+
+        return best_trees
+    
+    def aggregate_fit_random_trees_strategy(self, best_forests: list[list[DecisionTreeRegressor]]):
+        best_trees = []
+        best_trees_ratio = int(len(best_forests[0]) * 0.5) # numero de melhores arvores por floresta
+
+        for forest in best_forests:
+            forest_trees = forest
+            
+            if best_trees_ratio >= len(forest_trees):
+                # Se o número de árvores a serem selecionadas for maior ou igual ao número de árvores na floresta, 
+                # apenas adicionamos todas as árvores.
+                best_trees.extend(forest_trees)
+            else:
+                # Caso contrário, escolhemos um conjunto aleatório de árvores.
+                selected_trees = random.sample(forest_trees, best_trees_ratio)
+                best_trees.extend(selected_trees)
 
         return best_trees
         
