@@ -10,11 +10,11 @@ import uuid
 
 import utils
 
-TREES_BY_CLIENT = 50
+# TREES_BY_CLIENT = 50
 
 class HouseClient():
 
-    def __init__(self) -> None:
+    def __init__(self, trees_by_client: int) -> None:
         self.id = uuid.uuid4().int
         # Load house data
         (X_train, y_train), (self.X_test, self.y_test) = utils.load_house()
@@ -24,7 +24,8 @@ class HouseClient():
         (self.X_train, self.y_train) = utils.partition(X_train, y_train, 4)[partition_id]
 
         # Initialize local model and set initial_parameters
-        self.local_model = RandomForestRegressor(n_estimators=TREES_BY_CLIENT)
+        # self.local_model = RandomForestRegressor(n_estimators=TREES_BY_CLIENT)
+        self.local_model = RandomForestRegressor(n_estimators=trees_by_client)
         utils.set_initial_params(self.local_model, self.X_train, self.y_train) 
         self.trees = self.local_model.estimators_
 
