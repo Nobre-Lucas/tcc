@@ -50,7 +50,7 @@ def load_house_server_side():
 
 def load_server_side_validation_data():
     (_, _), (X_valid, y_valid)  = load_house()
-    return X_valid[-2:], y_valid[-2:]
+    return X_valid[-1000:], y_valid[-1000:]
 
 def shuffle(X: np.ndarray, y: np.ndarray):
     """Shuffle X and y."""

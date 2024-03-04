@@ -19,7 +19,7 @@ class HouseClient():
         # Load house data
         (X_train, y_train), (self.X_test, self.y_test) = utils.load_house()
 
-        # Split train set into 10 partitions and randomly use one for training.
+        # Split train set into 4 partitions and randomly use one for training.
         partition_id = np.random.choice(4)
         (self.X_train, self.y_train) = utils.partition(X_train, y_train, 4)[partition_id]
 
